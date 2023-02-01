@@ -44,28 +44,50 @@ app.post('/api/notes', (req, res) =>{
             text,
             noteId: uuid()
         };
+
+        fs.readFile('./db/db.json', 'utf8', (err, data) =>{
+            console.log('readfile data: ' + JSON.parse(data))
+            if(err){
+                console.log(err);
+            }else{
+                //push the new note into allNote array
+                console.log('data line 55: ' + JSON.parse(data))
+                let allNotes = JSON.parse(data);
+                allNotes.push(newNote);
+    
+                //rewrite db.json with new note array
+                fs.writeFile('./db/db.json', JSON.stringify(allNotes), err =>{
+                    if(err){
+                        console.log(err)
+                    }else{
+                        console.log('Note added')
+                    }
+                })
+            }
+        })
     }
 
     //get current notes
-    fs.readFile('./db/db.json', 'utf-8', (err, data) =>{
-        if(err){
-            console.log(err);
-        }else{
-            //push the new note into allNote array
-            console.log('data line 55: ' + JSON.parse(data))
-            const allNotes = JSON.parse(data);
-            allNotes.push(newNote);
+    // fs.readFile('./db/db.json', 'utf8', (err, data) =>{
+    //     console.log('readfile data: ' + JSON.parse(data))
+    //     if(err){
+    //         console.log(err);
+    //     }else{
+    //         //push the new note into allNote array
+    //         console.log('data line 55: ' + JSON.parse(data))
+    //         let allNotes = JSON.parse(data);
+    //         allNotes.push(newNote);
 
-            //rewrite db.json with new note array
-            fs.writeFile('./db/db.json', JSON.stringify(allNotes), err =>{
-                if(err){
-                    console.log(err)
-                }else{
-                    console.log('Note added')
-                }
-            })
-        }
-    })
+    //         //rewrite db.json with new note array
+    //         fs.writeFile('./db/db.json', JSON.stringify(allNotes), err =>{
+    //             if(err){
+    //                 console.log(err)
+    //             }else{
+    //                 console.log('Note added')
+    //             }
+    //         })
+    //     }
+    // })
 })
 
 
