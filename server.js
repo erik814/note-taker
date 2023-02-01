@@ -18,12 +18,15 @@ app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'public/index.html'
 
 app.get('/notes', (req, res) => res.sendFile(path.join(__dirname, 'public/notes.html')));
 
+// a readFile takes the file in its native format
+// we have to parse that file into a real object before Express can send it out
 
 app.get('/api/notes', (req, res) =>{
     fs.readFile('./db/db.json', 'utf8', (err, data) =>{
         if(err){
             console.log(err);
         }else{
+            res.json(JSON.parse(data))
             console.log('Request to get notes received');
         }
     })
