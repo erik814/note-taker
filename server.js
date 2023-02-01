@@ -50,7 +50,7 @@ app.post('/api/notes', (req, res) =>{
             if(err){
                 console.log(err);
             }else{
-                //push the new note into allNote array
+                //push the new note into allNotes array
                 console.log('data line 55: ' + JSON.parse(data))
                 let allNotes = JSON.parse(data);
                 allNotes.push(newNote);
@@ -62,33 +62,20 @@ app.post('/api/notes', (req, res) =>{
                     }else{
                         console.log('Note added')
                     }
-                })
+                });
             }
-        })
+        });
+
+        const response = {
+            status: 'success',
+            body: newNote,
+        };
+
+        res.status(201).json(response)    
+    }else{
+        res.status(500).json('Error in posting')
     }
-
-    //get current notes
-    // fs.readFile('./db/db.json', 'utf8', (err, data) =>{
-    //     console.log('readfile data: ' + JSON.parse(data))
-    //     if(err){
-    //         console.log(err);
-    //     }else{
-    //         //push the new note into allNote array
-    //         console.log('data line 55: ' + JSON.parse(data))
-    //         let allNotes = JSON.parse(data);
-    //         allNotes.push(newNote);
-
-    //         //rewrite db.json with new note array
-    //         fs.writeFile('./db/db.json', JSON.stringify(allNotes), err =>{
-    //             if(err){
-    //                 console.log(err)
-    //             }else{
-    //                 console.log('Note added')
-    //             }
-    //         })
-    //     }
-    // })
-})
+});
 
 
 app.listen(PORT, () =>
