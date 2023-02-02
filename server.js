@@ -6,10 +6,9 @@ const uuid = require('./helpers/uuid');
 const app = express(); 
 const PORT = process.env.PORT || 3001;
 
-// Here we tell Express where our folder is for static assets
+
 app.use(express.static('public'));
 
-// Here we set up express to properly read and parse form data
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -18,9 +17,7 @@ app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'public/index.html'
 
 app.get('/notes', (req, res) => res.sendFile(path.join(__dirname, 'public/notes.html')));
 
-// a readFile takes the file in its native format
-// we have to parse that file into a real object before Express can send it out
-
+// request to read existing notes
 app.get('/api/notes', (req, res) =>{
     fs.readFile('./db/db.json', 'utf8', (err, data) =>{
         if(err){
@@ -31,8 +28,6 @@ app.get('/api/notes', (req, res) =>{
         }
     })
 })
-
-
 
 // request to add a note
 app.post('/api/notes', (req, res) =>{
@@ -79,7 +74,6 @@ app.post('/api/notes', (req, res) =>{
         res.status(500).json('Error in posting')
     }
 });
-
 
 app.listen(PORT, () =>
     console.log(`App listening at http://localhost:${PORT} 🚀`)
